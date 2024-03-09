@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Assessment</title>
+    <style>
+        /* Styles as before */
+    </style>
+</head>
+<body>
+
+    <h1>Mental Health Assessment</h1>
+
+    <form id="assessmentForm">
+        <label for="studentID">Student ID:</label>
+        <input type="text" id="studentID" name="studentID" required>
+
+        <label for="stress">Stress Level (0-10):</label>
+        <input type="number" id="stress" name="stress" min="0" max="10" required>
+
+        <label for="anxiety">Anxiety Level (0-10):</label>
+        <input type="number" id="anxiety" name="anxiety" min="0" max="10" required>
+
+        <button type="button" onclick="submitAssessment()">Submit Assessment</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        function submitAssessment() {
+            var studentID = document.getElementById("studentID").value;
+            var stress = parseFloat(document.getElementById("stress").value);
+            var anxiety = parseFloat(document.getElementById("anxiety").value);
+
+            // Simple logic for depression prediction (replace with actual model prediction)
+            var depressionPrediction = stress + anxiety > 10 ? 1 : 0;
+
+            // Display result
+            var resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = "<h2>Assessment Results:</h2>";
+            resultDiv.innerHTML += "<p>Depression Prediction: " + depressionPrediction + "</p>";
+
+            if (depressionPrediction === 1) {
+                resultDiv.innerHTML += "<h3>Recommendations:</h3>";
+                resultDiv.innerHTML += "<p>- Consider seeking support from a mental health professional.</p>";
+                resultDiv.innerHTML += "<p>- Engage in stress-reducing activities such as exercise or meditation.</p>";
+            } else {
+                resultDiv.innerHTML += "<p>No significant concerns detected. Keep practicing healthy habits.</p>";
+            }
+
+            // Send assessment data to the backend for storage (replace with actual backend integration)
+            fetch('/store_assessment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    studentID: studentID,
+                    stress: stress,
+                    anxiety: anxiety,
+                    depressionPrediction: depressionPrediction,
+                }),
+            });
+        }
+    </script>
+
+</body>
+</html>
